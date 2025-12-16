@@ -1,11 +1,12 @@
 
 
 
-//  we used in this progrmme methods are map,filteter,reduce,find,some,foreach these method it is useful to study all these methods .
+//  we used in this progrmme methods are map,filter,reduce,find,some,foreach these method it is useful to study all these methods .
 // so this project helps to understand the javascript array methods
 // Let's build your course catalog application!
 
-// Sample Course Data [You can add more courses to this array
+
+// Sample Course Data You can add more courses to this array
 
 const sampleCourses = [
     {
@@ -82,14 +83,13 @@ const sampleCourses = [
 ];
 
 
-
 const formatLetter = (name) => name.charAt(0).toUpperCase() + name.slice(1);
 
 function displayCourses(sampleCourses) {
 
     const courseContainer = document.getElementById('course-container');
+    courseContainer.innerHTML = "";
     sampleCourses.forEach((sampleCourse) => {
-
         const courseUi = `<div class="course-card" id="courses-names">
                 <h1>${formatLetter(sampleCourse.name)}</h1>
                 <p>Price : ${formatLetter(sampleCourse.price)}</p>
@@ -103,33 +103,63 @@ function displayCourses(sampleCourses) {
     });
 };
 
-
-
-displayCourses(sampleCourses);
-
 // find the top rated course from the sampleCourses array
 
-function findTopratedCourse(sampleCourses){
+function findTopratedCourse(sampleCourses) {
     const top = sampleCourses.reduce((highest, course) => {
         return highest.rating > course.rating ? highest : course;
     });
     return top;
 }
 
-
-
-function topRatedCOurse(){
-
-    const rated= "Cyber Security";
+function displaytopRatedCourse(arr) {
+    
+    const rated = findTopratedCourse(arr);
+            const courseUi = `<div class="course-card" id="courses-names">
+                <h1>${formatLetter(rated.name)}</h1>
+                <p>Price : ${formatLetter(rated.price)}</p>
+                <p>Rating : ${Math.round(rated.rating * 10) / 10}</p>
+                <p>Available Languages : ${rated.languages}</p>
+                <p>Instructor : ${formatLetter(rated.instructor.mentor)}</p>
+                <p>Contact : ${rated.instructor.contactno}</p>   
+            </div>`;
     
     const topRated = document.getElementById('top-rated-courses');
-    topRated.innerHTML= rated;
-
+    topRated.innerHTML = courseUi;
 
 }
 
-document.getElementById('course-count').innerText = `Total Courses: ${sampleCourses.length}`;
+function displayCourseCount(){
+    const count = document.getElementById('course-count');
+    count.innerText = `Total Courses: ${sampleCourses.length}`;
+}
 
-topRatedCOurse();
-findTopratedCourse(sampleCourses);
+function getSearchvalue(sampleCourses,searchValue) {
+    const result = sampleCourses.filter((course) => {
+        return course.name.includes(searchValue.toLowerCase());
+    });
+    displayCourses(result);
+}
 
+
+
+// function to input course data from the search bar
+function inputCourseData() {
+
+    const searchInput = document.querySelector('#search-bar');
+    searchInput.addEventListener("input", (event) => {
+       getSearchvalue(sampleCourses, event.target.value); 
+    });
+};
+
+function initPage() {
+    displayCourseCount();
+    displayCourses(sampleCourses);
+    displaytopRatedCourse(sampleCourses);
+    inputCourseData(sampleCourses);
+}
+
+initPage();
+
+
+// final out put 
